@@ -1,4 +1,4 @@
-const { NotImplementedError } = require('../extensions/index.js');
+const { NotImplementedError } = require("../extensions/index.js");
 
 /**
  * In the popular Minesweeper game you have a board with some mines and those cells
@@ -23,11 +23,39 @@ const { NotImplementedError } = require('../extensions/index.js');
  *  [1, 1, 1]
  * ]
  */
-function minesweeper(/* matrix */) {
-  throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
+function minesweeper(matrix) {
+  let obj = {};
+  matrix.forEach((element, ind) => {
+    obj[ind] = element;
+    obj[ind] = obj[ind].map(() => 0);
+  });
+
+  matrix.forEach((arr, index, thatArr) => {
+    arr.forEach((bool, i, thisArr) => {
+      if (bool === true) {
+        if (typeof thisArr[i + 1] === "boolean") obj[index][i + 1]++;
+        if (typeof thisArr[i - 1] === "boolean") obj[index][i - 1]++;
+        if (typeof thatArr[index - 1] === "object") {
+          if (typeof thatArr[index - 1][i] === "boolean") obj[index - 1][i]++;
+          if (typeof thatArr[index - 1][i - 1] === "boolean")
+            obj[index - 1][i - 1]++;
+          if (typeof thatArr[index - 1][i + 1] === "boolean")
+            obj[index - 1][i + 1]++;
+        }
+        if (typeof thatArr[index + 1] === "object") {
+          if (typeof thatArr[index + 1][i] === "boolean") obj[index + 1][i]++;
+          if (typeof thatArr[index + 1][i - 1] === "boolean")
+            obj[index + 1][i - 1]++;
+          if (typeof thatArr[index + 1][i + 1] === "boolean")
+            obj[index + 1][i + 1]++;
+        }
+      }
+    });
+  });
+
+  return Object.values(obj);
 }
 
 module.exports = {
-  minesweeper
+  minesweeper,
 };
